@@ -2,14 +2,111 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Your Name – Student ID</title>
-<link rel="stylesheet" href="css/styles.css">
+<title>Wesley De Oliveira - 77487</title>
+<style>
+  /* Basic Reset */
+  * {margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif;}
+
+  body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .container {
+    text-align: center;
+    background: rgba(0,0,0,0.5);
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    color: #fffc;
+    text-shadow: 0 2px 10px #000;
+  }
+
+  #value {
+    font-size: 6rem;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #fff;
+    text-shadow: 0 0 20px #fff;
+    transition: 0.3s all;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(145deg, #ff6a00, #ee0979);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+  }
+
+  button::after {
+    content: '';
+    position: absolute;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255,255,255,0.1);
+    transform: rotate(45deg);
+    transition: all 0.5s;
+  }
+
+  button:hover::after {
+    left: 0;
+    top: 0;
+  }
+
+  #combo {
+    font-size: 1.5rem;
+    color: #ffeb3b;
+    text-shadow: 0 0 10px #ffeb3b;
+    animation: glow 1s infinite alternate;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ffeb3b;}
+    to { text-shadow: 0 0 20px #ffeb3b, 0 0 40px #ffeb3b;}
+  }
+
+</style>
 </head>
+
 <body>
 
 <div class="container">
 
-  <h1>Interactive Counter</h1>
+  <h1>Neon Counter</h1>
 
   <div id="value">0</div>
 
@@ -19,10 +116,67 @@
     <button class="btn increase">+ Increase</button>
   </div>
 
-  <p id="combo">Combo: 0</p>
+  <p id="combo"></p>
 
 </div>
 
-<script src="js/script.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  let count = 0;
+  let combo = 0;
+  const value = document.getElementById("value");
+  const comboText = document.getElementById("combo");
+
+  const btns = document.querySelectorAll(".btn");
+
+  btns.forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      const styles = e.currentTarget.classList;
+
+      if (styles.contains("decrease")) {
+        count--;
+        combo = combo > 0 ? combo + 1 : 1;
+        value.style.transform = 'scale(0.8)';
+      } 
+      else if (styles.contains("increase")) {
+        count++;
+        combo = combo > 0 ? combo + 1 : 1;
+        value.style.transform = 'scale(1.3)';
+      } 
+      else {
+        count = 0;
+        combo = 0;
+        value.style.transform = 'scale(1)';
+      }
+
+      value.textContent = count;
+      comboText.textContent = combo > 0 ? `Combo: ${combo}` : "";
+
+      updateColour();
+
+      setTimeout(() => { value.style.transform = 'scale(1)'; }, 200);
+
+    });
+  });
+
+  function updateColour() {
+    if (count > 0) {
+      const green = Math.min(255, 100 + count*10);
+      value.style.color = `rgb(0, ${green}, 255)`;
+      value.style.textShadow = `0 0 ${green/5 + 10}px rgb(0, ${green}, 255)`;
+    } else if (count < 0) {
+      const red = Math.min(255, 100 + Math.abs(count)*10);
+      value.style.color = `rgb(${red}, 0, 255)`;
+      value.style.textShadow = `0 0 ${red/5 + 10}px rgb(${red}, 0, 255)`;
+    } else {
+      value.style.color = '#fff';
+      value.style.textShadow = '0 0 20px #fff';
+    }
+  }
+
+});
+</script>
+
 </body>
 </html>
